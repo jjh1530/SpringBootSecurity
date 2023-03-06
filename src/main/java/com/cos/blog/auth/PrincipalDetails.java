@@ -21,9 +21,17 @@ import lombok.Data;
 public class PrincipalDetails implements UserDetails, OAuth2User{ // Oauth로그인과 일반 로그인을 PrincipalDetails에 담기위해
 	
 	private User user; // 콤포지션
+	private Map<String, Object> attributes;
 
+	//일반 로그인 생성자
 	public PrincipalDetails(User user) {
 		this.user = user;
+	}
+	
+	//OAuth 로그인 생성자
+	public PrincipalDetails(User user,Map<String, Object> attributes) {
+		this.user = user;
+		this.attributes = attributes;
 	}
 
 	//해당 user의 권한을 리턴 Role이 스트링이라 처리해줘야함
@@ -76,19 +84,15 @@ public class PrincipalDetails implements UserDetails, OAuth2User{ // Oauth로그
 		 * */
 		return true;
 	}
-
+	// OAuth2를 implement 할 때 오버라이딩
 	@Override
 	public Map<String, Object> getAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+		//Map 타입으로 구글 정보를 가져옴
+		return attributes;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	
 }
